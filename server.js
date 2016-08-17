@@ -11,14 +11,15 @@ var connector = new builder.ChatConnector({
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 var bot = new builder.UniversalBot(connector);
-
+// Create LUIS recognizer that points at our model and add it as the root '/' dialog for our Cortana Bot.
+var model = process.env.model || 'https://api.projectoxford.ai/luis/v1/application?id=225394b0-ada3-4069-94f9-40c105074bfd&subscription-key=c85419168d4a41c0bc83fe3710f1b8fe&q=';
+var recognizer = new builder.LuisRecognizer(model);
+var dialog = new builder.IntentDialog({ recognizers: [recognizer] });
+bot.dialog('/', dialog);
 //=========================================================
 // Bots Dialogs
 //=========================================================
-
-bot.dialog('/', function (session) {
-    session.send("Hello World");
-});
+dialog.on('greetings', builder.DialogAction.send('hi to you too.' ));
 
 // Setup Restify Server
 var server = restify.createServer();
