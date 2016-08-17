@@ -15,7 +15,7 @@ var bot = new builder.UniversalBot(connector);
 // Create LUIS Dialog that points at our model and add it as the root '/' dialog for our Cortana Bot.
 var dialog = new builder.LuisDialog(
     process.env.model
-    || 'https://api.projectoxford.ai/luis/v1/application?id=225394b0-ada3-4069-94f9-40c105074bfd&subscription-key=c85419168d4a41c0bc83fe3710f1b8fe&q='
+    || 'https://api.projectoxford.ai/luis/v1/application?id=68bcc248-1443-42b3-95bf-406b672e0ace&subscription-key=3d935e5af02c42dbb81acd62f72a7c8b&q='
 );
 bot.dialog('/', dialog);
 //=========================================================
