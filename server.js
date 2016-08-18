@@ -67,8 +67,8 @@ function (session, args, next) {
 dialog.on('framedetected', [
 function (session, args, next) {
 	session.send('piecedetected');
-	var num_ent = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number');
-	if (num_ent.entity == 0){
+	var num_ent = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number').entity;
+	if (num_ent == 0){
 		session.send('I am still waiting for the puzzle frame');
 	}
 	else{
@@ -76,6 +76,20 @@ function (session, args, next) {
 	}
 }
 ]);
+
+dialog.on('piecesdetected', [
+function (session, args, next) {
+	var ord = builder.EntityRecognizer.findEntity(args.entities, 'builtin.ordinal').entity;
+	var num = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number').entity;
+	if (ord < num){
+		session.send('I now see ' + ord + ' out of ' + num + ' pieces');
+	}
+	else{
+		session.send('Ok clock is starting. Lets see how fast you can solve the puzzle');
+	}	
+}
+]);
+
 
 dialog.onDefault(builder.DialogAction.send("I am sorry I do not understand."));
 
