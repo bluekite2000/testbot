@@ -61,6 +61,18 @@ function (session, args, next) {
     }
 }
 ]);
+
+dialog.on('framedetected', [
+function (session, args, next) {
+	var num_frame = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number');
+	if (num_frame == 0){
+		session.send('I am still waiting for the puzzle frame');
+	}
+	else{
+		session.send('Awesome. Lets see all the puzzle pieces')
+	}
+}
+]);
 dialog.onDefault(builder.DialogAction.send("I am sorry I do not understand."));
 
 // Setup Restify Server
