@@ -22,7 +22,12 @@ bot.dialog('/', dialog);
 // Bots Dialogs
 //=========================================================
 dialog.on('greetings', builder.DialogAction.send('hi there what should we do?' ));
-dialog.on('gamestarted', builder.DialogAction.send('framedetected' ));
+dialog.on('gamestarted', [
+function (session, args, next) {
+    session.send('framedetected');
+    session.send('Cool! Can you show me the puzzle tray?');    
+}
+]);//end of dialog
 dialog.on('helpwanted', builder.DialogAction.send('do you need a hint?' ));
 dialog.on('hintneeded', builder.DialogAction.send('showHint' ));
 dialog.on('hintrefused', builder.DialogAction.send('Ok cool guy' ));
