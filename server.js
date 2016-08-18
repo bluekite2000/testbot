@@ -83,7 +83,7 @@ function (session, args, next) {
 	var ord_to_num = ord.substring(0, ord.length-2); //hack for now
 	var num = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number').entity;
 	if (ord_to_num < num){
-		session.send('I now see ' + ord + ' out of ' + num + ' pieces');
+		session.send('I now see ' + ord_to_num + ' out of ' + num + ' pieces');
 	}
 	else{
 		session.send('Ok clock is starting. Lets see how fast you can solve the puzzle');
@@ -91,6 +91,20 @@ function (session, args, next) {
 }
 ]);
 
+dialog.on('correctplacement', [
+function (session, args, next) {
+	var ord = builder.EntityRecognizer.findEntity(args.entities, 'builtin.ordinal').entity;
+	var ord_to_num = ord.substring(0, ord.length-2);
+	var num = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number').entity;
+    var elapsed_time = builder.EntityRecognizer.findEntity(args.entities, 'builtin.datetime.time').entity;
+	if (ord_to_num == num){
+		session.send('Congrats. You finished the puzzle ' + elapsed_time);
+	}
+	else{
+		session.send('Keep playing. You are almost there');
+	}	
+}
+]);
 
 dialog.onDefault(builder.DialogAction.send("I am sorry I do not understand."));
 
