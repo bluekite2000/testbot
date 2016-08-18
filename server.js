@@ -67,10 +67,13 @@ function (session, args, next) {
 dialog.on('framedetected', [
 function (session, args, next) {
 	session.send('piecedetected');
-	var num_frame = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number');
-
-		session.send(num_frame);
-	
+	var num_ent = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number');
+	if (num_ent.entity == 0){
+		session.send('I am still waiting for the puzzle frame');
+	}
+	else{
+		session.send('Awesome. Lets see all the puzzle pieces')
+	}
 }
 ]);
 
