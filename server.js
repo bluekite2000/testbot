@@ -23,6 +23,7 @@ bot.dialog('/', dialog);
 // Bots Dialogs
 //=========================================================
 dialog.on('greetings', builder.DialogAction.send('hi there what should we do?' ));
+
 dialog.on('gamestarted', [
 function (session, args, next) {
     session.send('framedetected');
@@ -36,6 +37,7 @@ function (session, args, next) {
     session.send('Do you need a hint?');    
 }
 ]);
+
 dialog.on('hintneeded', [
 function (session, args, next) {
 	if(hintquestion_asked){
@@ -64,15 +66,14 @@ function (session, args, next) {
 
 dialog.on('framedetected', [
 function (session, args, next) {
+	session.send('piecedetected');
 	var num_frame = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number');
-	if (num_frame == 0){
-		session.send('I am still waiting for the puzzle frame');
-	}
-	else{
-		session.send('Awesome. Lets see all the puzzle pieces')
-	}
+
+		session.send(num_frame);
+	
 }
 ]);
+
 dialog.onDefault(builder.DialogAction.send("I am sorry I do not understand."));
 
 // Setup Restify Server
