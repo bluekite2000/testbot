@@ -1,5 +1,6 @@
 var restify = require('restify');
 var builder = require('botbuilder');
+var hintquestion_asked = false;
 
 //=========================================================
 // Bot Setup
@@ -27,10 +28,40 @@ function (session, args, next) {
     session.send('framedetected');
     session.send('Cool! Can you show me the puzzle tray?');    
 }
-]);//end of dialog
-dialog.on('helpwanted', builder.DialogAction.send('do you need a hint?' ));
-dialog.on('hintneeded', builder.DialogAction.send('showHint' ));
-dialog.on('hintrefused', builder.DialogAction.send('Ok cool guy' ));
+]);
+
+dialog.on('helpwanted', [
+function (session, args, next) {
+	hintquestion_asked = true;
+    session.send('Do you need a hint?');    
+}
+]);
+dialog.on('hintneeded', [
+function (session, args, next) {
+	if(hintquestion_asked){
+		hintquestion_asked = false;
+    	session.send('showHint');    
+    	session.send('Try this');    
+
+    }
+    else{
+    	session.send('I am sorry I do not understand.'); 
+    }
+}
+]);
+
+dialog.on('hintrefused', [
+function (session, args, next) {
+	if(hintquestion_asked){
+		hintquestion_asked = false;
+    	session.send('Ok cool guy');    
+    }
+    else{
+    	session.send('I am sorry I do not understand.'); 
+    }
+}
+]);
+dialog.onDefault(builder.DialogAction.send("I am sorry I do not understand."));
 
 // Setup Restify Server
 var server = restify.createServer();
