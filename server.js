@@ -80,8 +80,9 @@ function (session, args, next) {
 dialog.on('piecesdetected', [
 function (session, args, next) {
 	var ord = builder.EntityRecognizer.findEntity(args.entities, 'builtin.ordinal').entity;
+	var ord_to_num = ord.substring(0, ord.length-2); //hack for now
 	var num = builder.EntityRecognizer.findEntity(args.entities, 'builtin.number').entity;
-	if (ord < num){
+	if (ord_to_num < num){
 		session.send('I now see ' + ord + ' out of ' + num + ' pieces');
 	}
 	else{
